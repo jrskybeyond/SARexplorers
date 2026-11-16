@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Compare before-and-after NASA-ISRO NISAR radar images over Rasuwa, Nepal."
+    >
+    <title>SAR Explorer | NISAR Change Viewer</title>
+    <link rel="stylesheet" href="/static/styles.css?v=12">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="SAR Explorer home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>
+          <strong>SAR <span>EXPLORER</span></strong>
+          <small>NISAR CHANGE VIEWER · RASUWA</small>
+        </span>
+      </a>
+      <a class="data-link" href="https://search.asf.alaska.edu/" target="_blank" rel="noopener noreferrer">
+        Get NISAR data at ASF ↗
+      </a>
+    </header>
+
+    <main class="app-shell">
+      <section class="intro">
+        <p class="eyebrow">NASA-ISRO NISAR · SURFACE CHANGE</p>
+        <h1>See before.<br><em>See after.</em></h1>
+        <p class="intro-copy">
+          Upload two matching NISAR GeoTIFFs to view both images and where the
+          radar return changed.
+        </p>
+      </section>
+
+      <section class="upload-panel" aria-labelledby="upload-title">
+        <div class="panel-heading">
+          <div class="step-number">01</div>
+          <div>
+            <h2 id="upload-title">Choose your images</h2>
+            <p>Use the same band and polarization for both dates.</p>
+          </div>
+        </div>
+        <form id="analysis-form">
+          <div class="upload-grid">
+            <label class="file-card">
+              <span class="file-label">BEFORE</span>
+              <strong>Earlier observation</strong>
+              <input id="before-file" name="before" type="file" accept=".tif,.tiff" required>
+              <span class="file-help">GeoTIFF · up to 100 MB</span>
+            </label>
+            <label class="file-card">
+              <span class="file-label">AFTER</span>
+              <strong>Later observation</strong>
+              <input id="after-file" name="after" type="file" accept=".tif,.tiff" required>
+              <span class="file-help">Same grid · same band</span>
+            </label>
+          </div>
+          <button id="analyze-button" class="compare-button" type="submit">
+            Compare images <span aria-hidden="true">→</span>
+          </button>
+          <details class="advanced-settings">
+            <summary>Advanced settings</summary>
+            <div class="settings-grid">
+              <label>
+                <span>INPUT VALUES</span>
+                <select name="scale">
+                  <option value="linear" selected>Linear backscatter</option>
+                  <option value="db">Already in dB</option>
+                </select>
+              </label>
+              <label>
+                <span>CHANGE FILTER</span>
+                <select name="threshold_db">
+                  <option value="-2">−2 dB · broader</option>
+                  <option value="-3" selected>−3 dB · default</option>
+                  <option value="-5">−5 dB · stricter</option>
+                  <option value="-7">−7 dB · strictest</option>
+                </select>
+              </label>
+            </div>
+          </details>
+        </form>
+        <p class="data-help">
+          Need files? Get NISAR GCOV data from
+          <a href="https://search.asf.alaska.edu/" target="_blank" rel="noopener noreferrer">ASF</a>,
+          then export the same layer from both dates as aligned GeoTIFFs.
+        </p>
+      </section>
+
+      <div id="analysis-result" class="analysis-result" role="status" aria-live="polite"></div>
+
+      <section id="raster-comparison" class="results-panel" hidden aria-labelledby="results-title">
+        <div class="results-heading">
+          <div class="step-number">02</div>
+          <div>
+            <h2 id="results-title">Your comparison</h2>
+            <p id="comparison-date-summary">Before and after</p>
+          </div>
+        </div>
+        <div class="image-grid">
+          <figure class="image-card">
+            <figcaption><span>BEFORE</span><strong id="before-preview-name"></strong></figcaption>
+            <img id="before-preview" alt="Before NISAR radar image">
+          </figure>
+          <figure class="image-card">
+            <figcaption><span>AFTER</span><strong id="after-preview-name"></strong></figcaption>
+            <img id="after-preview" alt="After NISAR radar image">
+          </figure>
+        </div>
+        <figure class="difference-card">
+          <figcaption>
+            <span>WHAT CHANGED?</span>
+            <strong>Radar-return difference</strong>
+          </figcaption>
+          <img id="difference-preview" alt="Color view of radar-return differences between the two observations">
+          <div class="difference-legend" aria-label="Difference colors">
+            <span><i class="lower"></i>Lower return</span>
+            <span><i class="steady"></i>Little change</span>
+            <span><i class="higher"></i>Higher return</span>
+          </div>
+          <p class="difference-note">
+            Color shows radar-return change, not confirmed floodwater. Use it to
+            decide where local reports or field checks may help.
+          </p>
+        </figure>
+      </section>
+
+      <footer class="footer-note">
+        NISAR radar changes are a screening signal—not a confirmed flood boundary or damage map.
+      </footer>
+    </main>
+    <script src="/static/app.js?v=12" defer></script>
+  </body>
+</html>

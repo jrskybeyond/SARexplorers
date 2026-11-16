@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+*.py[cod]
+*.tif
+*.tiff
+*.h5
+*.hdf5
+
+tests/
+docs/
